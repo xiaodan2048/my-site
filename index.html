@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="陈晓丹，AI 产品经理，专注将 AI 能力转化为真正可用的产品，关注场景判断、需求验证与产品落地。">
+  <meta name="theme-color" content="#596a72">
+  <title>陈晓丹 - 把 AI 能力做成可用产品的产品经理</title>
+  <script>document.documentElement.classList.add('js');</script>
+  <style>
+    :root {
+      --white: #fff;
+      --white-80: rgba(255,255,255,.80);
+      --white-70: rgba(255,255,255,.70);
+      --white-50: rgba(255,255,255,.50);
+      --white-20: rgba(255,255,255,.20);
+      --white-10: rgba(255,255,255,.10);
+      --white-06: rgba(255,255,255,.06);
+      --night: #172028;
+      --scene: #596a72;
+      --scene-dark: #45565d;
+      --placeholder-a: #6f7f86;
+      --placeholder-b: #4c5e65;
+      --max-width: 80rem;
+      --page-gutter: clamp(1rem, 3vw, 2rem);
+      --font-sans: "Helvetica Regular", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --ease: cubic-bezier(.22,.61,.36,1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 5rem;
+    }
+
+    body {
+      margin: 0;
+      min-width: 20rem;
+      color: var(--white);
+      background: var(--scene);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body.menu-open { overflow: hidden; }
+
+    ::selection {
+      color: var(--white);
+      background: rgba(255,255,255,.20);
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { color: inherit; font: inherit; }
+
+    .skip-link {
+      position: fixed;
+      z-index: 100;
+      top: .75rem;
+      left: .75rem;
+      padding: .65rem 1rem;
+      color: var(--night);
+      background: var(--white);
+      border-radius: 999px;
+      transform: translateY(-180%);
+      transition: transform .2s ease;
+    }
+
+    .skip-link:focus { transform: translateY(0); }
+
+    .background-placeholder {
+      position: fixed;
+      z-index: 0;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--scene);
+    }
+
+    .background-video {
+      position: fixed;
+      z-index: 0;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: var(--scene);
+    }
+
+    .background-label {
+      position: absolute;
+      z-index: 1;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      padding: .55rem .75rem;
+      border: 1px solid var(--white-20);
+      border-radius: .7rem;
+      color: var(--white-70);
+      background: var(--scene-dark);
+      font-size: 10px;
+      line-height: 1.45;
+      letter-spacing: .08em;
+      text-align: right;
+      text-transform: uppercase;
+    }
+
+    .page {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      width: 100%;
+      min-height: 115vh;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: min(100%, var(--max-width));
+      margin-inline: auto;
+      padding-inline: var(--page-gutter);
+    }
+
+    .site-header {
+      position: fixed;
+      z-index: 50;
+      top: 0;
+      left: 0;
+      width: 100%;
+      transition: background-color .3s ease, backdrop-filter .3s ease;
+    }
+
+    .site-header.is-scrolled,
+    .site-header.is-open {
+      background: rgba(23,32,40,.34);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-row {
+      display: flex;
+      min-height: 4.75rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: .78rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-shadow: 0 1px 14px rgba(0,0,0,.18);
+    }
+
+    .brand svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .desktop-nav {
+      display: flex;
+      align-items: center;
+      gap: clamp(1.25rem,2.7vw,2.5rem);
+      color: var(--white-70);
+      font-size: .7rem;
+      letter-spacing: .04em;
+    }
+
+    .desktop-nav a {
+      transition: color .2s ease;
+      text-shadow: 0 1px 14px rgba(0,0,0,.18);
+    }
+
+    .desktop-nav a:hover,
+    .desktop-nav a:focus-visible { color: var(--white); }
+
+    .menu-button {
+      display: none;
+      width: 2.5rem;
+      height: 2.5rem;
+      padding: 0;
+      border: 1px solid var(--white-20);
+      border-radius: 999px;
+      background: rgba(23,32,40,.12);
+      cursor: pointer;
+    }
+
+    .menu-button span {
+      display: block;
+      width: .9rem;
+      height: 1px;
+      margin: .23rem auto;
+      background: currentColor;
+      transition: transform .25s ease;
+    }
+
+    .menu-button[aria-expanded="true"] span:first-child { transform: translateY(.23rem) rotate(45deg); }
+    .menu-button[aria-expanded="true"] span:last-child { transform: translateY(-.23rem) rotate(-45deg); }
+    .mobile-nav { display: none; }
+
+    main { width: 100%; }
+    section { scroll-margin-top: 4.75rem; }
+
+    .hero {
+      display: grid;
+      min-height: 100svh;
+      place-items: center;
+      padding: 7rem var(--page-gutter) 5rem;
+      text-align: center;
+    }
+
+    .hero-content {
+      display: flex;
+      width: min(100%,46rem);
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-kicker {
+      margin: 0 0 1.15rem;
+      color: var(--white-70);
+      font-size: .7rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 18px rgba(0,0,0,.22);
+    }
+
+    .hero h1 {
+      max-width: 14ch;
+      margin: 0;
+      font-size: clamp(2.7rem,6.2vw,5.25rem);
+      font-weight: 400;
+      line-height: 1.03;
+      letter-spacing: -.045em;
+      text-wrap: balance;
+      text-shadow: 0 2px 24px rgba(0,0,0,.22);
+    }
+
+    .hero-copy {
+      max-width: 34rem;
+      margin: 1.35rem 0 0;
+      color: var(--white-70);
+      font-size: .94rem;
+      text-shadow: 0 2px 18px rgba(0,0,0,.20);
+    }
+
+    .cta-pill {
+      display: flex;
+      width: min(100%,31rem);
+      min-height: 3.35rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      margin-top: 2rem;
+      padding: .3rem .35rem .3rem 1.2rem;
+      border: 1px solid var(--white-20);
+      border-radius: 999px;
+      color: var(--white-70);
+      background: rgba(255,255,255,.01);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,.08);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+      font-size: .75rem;
+      text-align: left;
+      transition: border-color .25s ease, transform .25s var(--ease);
+    }
+
+    .cta-pill:hover,
+    .cta-pill:focus-visible {
+      border-color: rgba(255,255,255,.38);
+      transform: translateY(-2px);
+    }
+
+    .cta-button {
+      display: inline-flex;
+      min-height: 2.7rem;
+      align-items: center;
+      justify-content: center;
+      padding: .65rem 1.35rem;
+      border-radius: 999px;
+      color: var(--white);
+      background: rgba(23,32,40,.72);
+      font-size: .64rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+
+    .content-section {
+      display: flex;
+      min-height: 90svh;
+      align-items: center;
+      padding-block: clamp(7rem,13vw,11rem);
+    }
+
+    .section-panel {
+      width: 100%;
+      padding: clamp(1.5rem,4vw,3rem);
+      border-top: 1px solid var(--white-20);
+      border-bottom: 1px solid var(--white-20);
+      background: rgba(23,32,40,.08);
+    }
+
+    .section-heading {
+      display: grid;
+      grid-template-columns: minmax(8rem,3fr) minmax(0,9fr);
+      gap: clamp(2rem,5vw,5rem);
+      margin-bottom: clamp(3rem,7vw,5rem);
+    }
+
+    .section-label {
+      margin: .3rem 0 0;
+      color: var(--white-50);
+      font-size: .65rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      max-width: 20ch;
+      margin: 0;
+      font-size: clamp(2rem,4.2vw,3.8rem);
+      font-weight: 400;
+      line-height: 1.07;
+      letter-spacing: -.035em;
+      text-wrap: balance;
+    }
+
+    .section-description {
+      max-width: 37rem;
+      margin: 1.2rem 0 0;
+      color: var(--white-70);
+      font-size: .9rem;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      border-top: 1px solid var(--white-20);
+    }
+
+    .problem {
+      min-height: 14rem;
+      padding: 1.8rem 2rem 1.8rem 0;
+    }
+
+    .problem + .problem {
+      padding-left: 2rem;
+      border-left: 1px solid var(--white-20);
+    }
+
+    .problem-number {
+      display: block;
+      margin-bottom: 3.8rem;
+      color: var(--white-50);
+      font-size: .65rem;
+      letter-spacing: .12em;
+    }
+
+    .problem h3 {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 400;
+    }
+
+    .problem p {
+      margin: .7rem 0 0;
+      color: var(--white-70);
+      font-size: .82rem;
+    }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 1.5rem;
+    }
+
+    .case-card {
+      overflow: hidden;
+      border: 1px solid var(--white-20);
+      border-radius: 1.5rem;
+      background: rgba(23,32,40,.10);
+    }
+
+    .image-placeholder {
+      display: grid;
+      min-height: clamp(16rem,30vw,24rem);
+      place-items: center;
+      padding: 2rem;
+      color: var(--white-70);
+      background: var(--placeholder-a);
+      font-size: .68rem;
+      line-height: 1.7;
+      letter-spacing: .08em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .case-card:nth-child(2) .image-placeholder { background: var(--placeholder-b); }
+
+    .case-info {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      padding: 1.35rem 1.5rem 1.5rem;
+      border-top: 1px solid var(--white-10);
+    }
+
+    .case-info h3 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .case-info p {
+      grid-column: 1 / -1;
+      margin: 0;
+      color: var(--white-50);
+      font-size: .75rem;
+    }
+
+    .case-status {
+      color: var(--white-50);
+      font-size: .62rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .process-list { border-top: 1px solid var(--white-20); }
+
+    .process-row {
+      display: grid;
+      grid-template-columns: 4rem minmax(12rem,4fr) minmax(18rem,7fr);
+      gap: 2rem;
+      align-items: baseline;
+      padding-block: 1.45rem;
+      border-bottom: 1px solid var(--white-20);
+    }
+
+    .process-row span {
+      color: var(--white-50);
+      font-size: .65rem;
+      letter-spacing: .12em;
+    }
+
+    .process-row h3 {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 400;
+    }
+
+    .process-row p {
+      margin: 0;
+      color: var(--white-70);
+      font-size: .84rem;
+    }
+
+    .closing {
+      display: flex;
+      min-height: 115svh;
+      flex-direction: column;
+      align-items: center;
+      padding: 8rem var(--page-gutter) var(--page-gutter);
+    }
+
+    .closing-cta {
+      display: flex;
+      width: min(100%,43rem);
+      flex-direction: column;
+      align-items: center;
+      margin-inline: auto;
+      text-align: center;
+    }
+
+    .closing-cta h2 {
+      max-width: 17ch;
+      margin: 0;
+      font-size: clamp(2.4rem,5vw,4rem);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -.04em;
+      text-wrap: balance;
+      text-shadow: 0 2px 24px rgba(0,0,0,.2);
+    }
+
+    .closing-cta .cta-pill { margin-top: 1.7rem; }
+
+    .liquid-glass {
+      position: relative;
+      overflow: hidden;
+      border: none;
+      background: rgba(255,255,255,.01);
+      background-blend-mode: luminosity;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,.1);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+    }
+
+    .liquid-glass::before {
+      content: '';
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+      padding: 1.4px;
+      border-radius: inherit;
+      background: linear-gradient(180deg,
+        rgba(255,255,255,.45) 0%, rgba(255,255,255,.15) 20%,
+        rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
+        rgba(255,255,255,.15) 80%, rgba(255,255,255,.45) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .glass-footer {
+      width: min(100%,var(--max-width));
+      margin-top: 8rem;
+      padding: 1.5rem;
+      border-radius: 1.5rem;
+      color: var(--white-70);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: repeat(12,minmax(0,1fr));
+      gap: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .footer-brand { grid-column: span 5; }
+
+    .footer-brand-name {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      color: var(--white);
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
+    .footer-logo {
+      display: block;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .footer-brand p {
+      max-width: 24rem;
+      margin: 1rem 0 0;
+      font-size: .875rem;
+      line-height: 1.65;
+    }
+
+    .footer-links {
+      display: grid;
+      grid-column: span 7;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      gap: 2rem;
+    }
+
+    .footer-column h3 {
+      margin: 0 0 1rem;
+      color: var(--white);
+      font-size: .875rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .footer-column ul {
+      display: grid;
+      gap: .5rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: .75rem;
+    }
+
+    .footer-column a { transition: color .2s ease; }
+    .footer-column a:hover,
+    .footer-column a:focus-visible { color: var(--white); }
+    .pending { color: var(--white-50); }
+
+    .footer-bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--white-10);
+      color: var(--white);
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .footer-bottom p { margin: 0; opacity: .5; }
+
+    .footer-social {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+    }
+
+    .footer-social-label { opacity: .5; }
+
+    .social-icons {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+    }
+
+    .social-icon {
+      display: inline-grid;
+      width: 1rem;
+      height: 1rem;
+      place-items: center;
+      font-size: .62rem;
+      letter-spacing: 0;
+      opacity: .7;
+      text-transform: none;
+    }
+
+    .js .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .7s var(--ease),transform .7s var(--ease);
+    }
+
+    .js .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .js .footer-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 1s ease-out .4s,transform 1s ease-out .4s;
+    }
+
+    .js .footer-reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    :focus-visible { outline: 2px solid var(--white); outline-offset: 4px; }
+
+    @media (min-width:768px) {
+      .glass-footer {
+        margin-top: 16rem;
+        padding: 2.5rem;
+      }
+
+      .footer-top { gap: 3rem; }
+
+      .footer-bottom {
+        flex-direction: row;
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width:900px) {
+      .desktop-nav { display: none; }
+      .menu-button { display: block; }
+
+      .mobile-nav {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows .35s var(--ease);
+      }
+
+      .mobile-nav > div { overflow: hidden; }
+      .mobile-nav.is-open { grid-template-rows: 1fr; }
+
+      .mobile-nav-links {
+        display: grid;
+        padding: .5rem var(--page-gutter) 1.5rem;
+      }
+
+      .mobile-nav-links a {
+        padding-block: .85rem;
+        border-bottom: 1px solid var(--white-10);
+        color: var(--white-70);
+        font-size: 1rem;
+      }
+
+      .section-heading { grid-template-columns: 1fr; gap: 1rem; }
+
+      .problem-grid { grid-template-columns: 1fr; }
+
+      .problem,
+      .problem + .problem {
+        min-height: 0;
+        padding: 1.5rem 0;
+        border-left: 0;
+        border-bottom: 1px solid var(--white-20);
+      }
+
+      .problem-number { margin-bottom: 2rem; }
+
+      .footer-brand,
+      .footer-links { grid-column: 1 / -1; }
+    }
+
+    @media (max-width:650px) {
+      .nav-row { min-height: 4.25rem; }
+
+      .background-label {
+        right: .75rem;
+        bottom: .75rem;
+        max-width: 12rem;
+        font-size: 9px;
+      }
+
+      .hero { padding-top: 6rem; }
+
+      .hero h1 { max-width: 11ch; }
+
+      .cta-pill {
+        align-items: stretch;
+        flex-direction: column;
+        padding: .85rem;
+        border-radius: 1.2rem;
+        text-align: center;
+      }
+
+      .cta-button { width: 100%; }
+
+      .content-section { min-height: 0; }
+      .section-panel { padding-inline: 0; }
+      .case-grid { grid-template-columns: 1fr; }
+
+      .process-row {
+        grid-template-columns: 2rem minmax(0,1fr);
+        gap: 1rem;
+      }
+
+      .process-row p { grid-column: 2; }
+
+      .closing { padding-inline: .75rem; }
+
+      .footer-links {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-column:last-child { grid-column: 1 / -1; }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      html { scroll-behavior: auto; }
+      *,*::before,*::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        transition-delay: 0ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+
+  <div class="background-placeholder" aria-hidden="true">
+    <video class="background-video" autoplay loop muted playsinline></video>
+    <div class="background-label">全屏背景视频占位<br>建议 1920 × 1080 · MP4<br>电影感远景，主体居中偏下</div>
+  </div>
+
+  <header class="site-header" id="site-header">
+    <div class="container nav-row">
+      <a class="brand" href="#top" aria-label="陈晓丹，返回顶部">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M 4.688 136 C 68.373 136 120 187.627 120 251.312 C 120 252.883 119.967 254.445 119.905 256 L 0 256 L 0 136.096 C 1.555 136.034 3.117 136 4.688 136 Z M 251.312 136 C 252.883 136 254.445 136.034 256 136.096 L 256 256 L 136.095 256 C 136.032 254.438 136.001 252.875 136 251.312 C 136 187.627 187.627 136 251.312 136 Z M 119.905 0 C 119.967 1.555 120 3.117 120 4.688 C 120 68.373 68.373 120 4.687 120 C 3.117 120 1.555 119.967 0 119.905 L 0 0 Z M 256 119.905 C 254.445 119.967 252.883 120 251.312 120 C 187.627 120 136 68.373 136 4.687 C 136 3.117 136.033 1.555 136.095 0 L 256 0 Z"/></svg>
+        <span>陈晓丹</span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="主要导航">
+        <a href="#problems">能解决的问题</a>
+        <a href="#cases">案例与思考</a>
+        <a href="#process">工作方式</a>
+        <a href="#about">关于与联系</a>
+      </nav>
+
+      <button class="menu-button" id="menu-button" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="打开导航菜单">
+        <span></span><span></span>
+      </button>
+    </div>
+
+    <nav class="mobile-nav" id="mobile-nav" aria-label="移动端导航">
+      <div>
+        <div class="mobile-nav-links">
+          <a href="#problems">能解决的问题</a>
+          <a href="#cases">案例与思考</a>
+          <a href="#process">工作方式</a>
+          <a href="#about">关于与联系</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="page">
+    <main id="main-content">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <p class="hero-kicker reveal">Chen Xiaodan · AI Product Manager</p>
+          <h1 class="reveal" id="hero-title">把 AI 能力，做成真正可用的产品。</h1>
+          <p class="hero-copy reveal">关注场景判断、需求验证与产品落地，让技术能力转化为用户真正愿意使用的产品。</p>
+          <a class="cta-pill reveal" href="#problems">
+            <span>从我能解决的问题开始了解</span>
+            <span class="cta-button">继续了解</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="content-section" id="problems" aria-labelledby="problems-title">
+        <div class="container">
+          <div class="section-panel">
+            <div class="section-heading reveal">
+              <p class="section-label">01 · What I Solve</p>
+              <div>
+                <h2 class="section-title" id="problems-title">从业务问题出发，而不是从 AI 功能出发。</h2>
+                <p class="section-description">把模糊机会变成可以验证、可以推进、最终可以使用的产品。</p>
+              </div>
+            </div>
+
+            <div class="problem-grid">
+              <article class="problem reveal">
+                <span class="problem-number">01</span>
+                <h3>判断场景</h3>
+                <p>判断一个业务问题是否真的适合使用 AI，避免为技术寻找需求。</p>
+              </article>
+              <article class="problem reveal">
+                <span class="problem-number">02</span>
+                <h3>验证需求</h3>
+                <p>把模糊需求拆成清晰假设，用更小的成本验证真实用户价值。</p>
+              </article>
+              <article class="problem reveal">
+                <span class="problem-number">03</span>
+                <h3>推动落地</h3>
+                <p>在模型能力、体验、成本和业务目标之间做取舍，推动方案成为可用产品。</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="cases" aria-labelledby="cases-title">
+        <div class="container">
+          <div class="section-panel">
+            <div class="section-heading reveal">
+              <p class="section-label">02 · Selected Thinking</p>
+              <div>
+                <h2 class="section-title" id="cases-title">少量、具体，能够看见判断过程。</h2>
+                <p class="section-description">当前为内容占位，不虚构项目。后续放真实工作案例、AI 产品拆解或产品决策备忘录。</p>
+              </div>
+            </div>
+
+            <div class="case-grid">
+              <article class="case-card reveal">
+                <div class="image-placeholder" role="img" aria-label="真实工作案例封面占位，建议尺寸 1600 乘 1000 像素">这里放真实工作案例封面<br>建议尺寸：1600 × 1000<br>建议内容：产品界面或决策场景</div>
+                <div class="case-info">
+                  <h3>一个真实工作的匿名案例</h3>
+                  <span class="case-status">待补充</span>
+                  <p>后续填写问题、限制、关键判断、行动与结果。</p>
+                </div>
+              </article>
+
+              <article class="case-card reveal">
+                <div class="image-placeholder" role="img" aria-label="AI 产品拆解封面占位，建议尺寸 1600 乘 1000 像素">这里放 AI 产品拆解封面<br>建议尺寸：1600 × 1000<br>建议内容：分析对象或研究主题</div>
+                <div class="case-info">
+                  <h3>一次有明确结论的产品拆解</h3>
+                  <span class="case-status">待补充</span>
+                  <p>后续填写产品机会、用户价值与核心体验判断。</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" id="process" aria-labelledby="process-title">
+        <div class="container">
+          <div class="section-panel">
+            <div class="section-heading reveal">
+              <p class="section-label">03 · How I Work</p>
+              <div>
+                <h2 class="section-title" id="process-title">在不确定性里，持续缩小正确答案的范围。</h2>
+                <p class="section-description">一套简洁、可复用的 AI 产品推进路径。</p>
+              </div>
+            </div>
+
+            <div class="process-list">
+              <article class="process-row reveal"><span>01</span><h3>判断机会</h3><p>这个问题值得解决吗，AI 是必要条件吗？</p></article>
+              <article class="process-row reveal"><span>02</span><h3>定义价值</h3><p>目标用户是谁，什么变化才算真正有价值？</p></article>
+              <article class="process-row reveal"><span>03</span><h3>验证可行性</h3><p>模型能力、体验与成本能否同时成立？</p></article>
+              <article class="process-row reveal"><span>04</span><h3>推动交付</h3><p>如何让方案落地，并在真实反馈中继续迭代？</p></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="closing" id="about" aria-labelledby="about-title">
+        <div class="closing-cta reveal">
+          <h2 id="about-title">清晰判断，减少噪音。</h2>
+          <div class="cta-pill" aria-label="联系方式待补充">
+            <span>如果你有重要的 AI 产品问题</span>
+            <span class="cta-button">联系方式待补充</span>
+          </div>
+        </div>
+
+        <footer class="liquid-glass glass-footer footer-reveal">
+          <div class="footer-top">
+            <div class="footer-brand">
+              <div class="footer-brand-name">
+                <svg class="footer-logo" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M 4.688 136 C 68.373 136 120 187.627 120 251.312 C 120 252.883 119.967 254.445 119.905 256 L 0 256 L 0 136.096 C 1.555 136.034 3.117 136 4.688 136 Z M 251.312 136 C 252.883 136 254.445 136.034 256 136.096 L 256 256 L 136.095 256 C 136.032 254.438 136.001 252.875 136 251.312 C 136 187.627 187.627 136 251.312 136 Z M 119.905 0 C 119.967 1.555 120 3.117 120 4.688 C 120 68.373 68.373 120 4.687 120 C 3.117 120 1.555 119.967 0 119.905 L 0 0 Z M 256 119.905 C 254.445 119.967 252.883 120 251.312 120 C 187.627 120 136 68.373 136 4.687 C 136 3.117 136.033 1.555 136.095 0 L 256 0 Z"/></svg>
+                <span>陈晓丹</span>
+              </div>
+              <p>AI 产品经理，关注场景判断、需求验证与产品落地。把 AI 能力，做成真正可用的产品。</p>
+            </div>
+
+            <div class="footer-links">
+              <div class="footer-column">
+                <h3>探索</h3>
+                <ul>
+                  <li><a href="#problems">能解决的问题</a></li>
+                  <li><a href="#cases">案例与思考</a></li>
+                  <li><a href="#process">工作方式</a></li>
+                  <li><a href="#about">关于我</a></li>
+                  <li><a href="#top">返回顶部</a></li>
+                </ul>
+              </div>
+              <div class="footer-column">
+                <h3>方法</h3>
+                <ul>
+                  <li><span>判断机会</span></li>
+                  <li><span>定义价值</span></li>
+                  <li><span>验证可行性</span></li>
+                  <li><span>推动交付</span></li>
+                </ul>
+              </div>
+              <div class="footer-column">
+                <h3>联系</h3>
+                <ul>
+                  <li><span class="pending">邮箱 · 待补充</span></li>
+                  <li><span class="pending">微信 · 待补充</span></li>
+                  <li><span class="pending">简历 · 待补充</span></li>
+                  <li><span class="pending">合作咨询 · 待补充</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            <p>Curated by Chen Xiaodan · © <span id="year">2026</span></p>
+            <div class="footer-social" aria-label="社交平台入口占位">
+              <span class="footer-social-label">Join the Journey:</span>
+              <span class="social-icons" aria-hidden="true">
+                <span class="social-icon">♫</span><span class="social-icon">f</span><span class="social-icon">X</span><span class="social-icon">▶</span><span class="social-icon">◎</span>
+              </span>
+            </div>
+          </div>
+        </footer>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      var header = document.getElementById('site-header');
+      var menuButton = document.getElementById('menu-button');
+      var mobileNav = document.getElementById('mobile-nav');
+      var mobileLinks = mobileNav.querySelectorAll('a');
+
+      function updateHeader() {
+        header.classList.toggle('is-scrolled', window.scrollY > 20);
+      }
+
+      function closeMenu() {
+        menuButton.setAttribute('aria-expanded','false');
+        menuButton.setAttribute('aria-label','打开导航菜单');
+        mobileNav.classList.remove('is-open');
+        header.classList.remove('is-open');
+        document.body.classList.remove('menu-open');
+      }
+
+      menuButton.addEventListener('click',function () {
+        var open = menuButton.getAttribute('aria-expanded') !== 'true';
+        menuButton.setAttribute('aria-expanded',String(open));
+        menuButton.setAttribute('aria-label',open ? '关闭导航菜单' : '打开导航菜单');
+        mobileNav.classList.toggle('is-open',open);
+        header.classList.toggle('is-open',open);
+        document.body.classList.toggle('menu-open',open);
+      });
+
+      mobileLinks.forEach(function (link) { link.addEventListener('click',closeMenu); });
+      document.addEventListener('keydown',function (event) { if (event.key === 'Escape') closeMenu(); });
+      window.addEventListener('scroll',updateHeader,{passive:true});
+      updateHeader();
+
+      var items = document.querySelectorAll('.reveal,.footer-reveal');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        items.forEach(function (item) { item.classList.add('is-visible'); });
+      } else {
+        var observer = new IntersectionObserver(function (entries,instance) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              instance.unobserve(entry.target);
+            }
+          });
+        },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+        items.forEach(function (item) { observer.observe(item); });
+      }
+
+      document.getElementById('year').textContent = String(new Date().getFullYear());
+    }());
+  </script>
+</body>
+</html>
